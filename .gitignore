@@ -1,0 +1,6 @@
+*.egg-info
+tmp*
+__pycache__
+mlruns
+dagster_home
+data
