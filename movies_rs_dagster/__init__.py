@@ -104,7 +104,7 @@ defs = Definitions(
     jobs=[
         get_data_job,
         define_asset_job("full_process",
-                         selection=AssetSelection.groups('recommender', 'core'),
+                         selection=AssetSelection.groups('elt', 'recommender', 'core'),
                          config=job_all_config),
         define_asset_job(
             "only_training",

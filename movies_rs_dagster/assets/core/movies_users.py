@@ -1,4 +1,4 @@
-from dagster import asset, Output, String, AssetIn, FreshnessPolicy, MetadataValue
+from dagster import asset, Output, String, AssetIn, FreshnessPolicy, MetadataValue, AssetKey
 from dagster_mlflow import mlflow_tracking
 import pandas as pd
 import os
@@ -16,6 +16,7 @@ movies_categories_columns = [
     config_schema={
         'uri': String
     },
+    deps=[AssetKey(["dbt", "scores_movies_users"])]
 )
 def movies(context) -> Output[pd.DataFrame]:
     #uri = context.op_config["uri"]
@@ -34,7 +35,8 @@ def movies(context) -> Output[pd.DataFrame]:
 @asset(
     config_schema={
          'uri': String
-    }
+    },
+    deps=[AssetKey(["dbt", "scores_movies_users"])]
 )
 def users(context) -> Output[pd.DataFrame]:
     #uri = context.op_config["uri"]
@@ -53,7 +55,8 @@ def users(context) -> Output[pd.DataFrame]:
     resource_defs={'mlflow': mlflow_tracking},
     config_schema={
         'uri': String
-    }
+    },
+    deps=[AssetKey(["dbt", "scores_movies_users"])]
 )
 def scores(context) -> Output[pd.DataFrame]:
     mlflow = context.resources.mlflow
